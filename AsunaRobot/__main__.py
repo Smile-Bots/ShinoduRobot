@@ -74,44 +74,36 @@ def get_readable_time(seconds: int) -> str:
 
 
 PM_START_TEXT = """
-`Hello` [🌺](https://telegra.ph/file/5c9c60b5360a9a31896a0.jpg) `My name is` *Asuna*
-`I am powerful  group management bot.
-Build by The Ghost Hunter for Your Telegram Group , I specialize in managing Entertainment type groups.
-You can find my list of available commands with! Hit` *📚Commands*   
+`𝙷𝚎𝚢 𝚃𝚑𝚎𝚛𝚎!` [👩‍💼](https://telegra.ph/file/88e5c9e4eb11d47625068.jpg) `My name is` *Shinobu*
+`𝙸 𝚊𝚖 𝚊𝚗 𝙰𝚗𝚒𝚖𝚎 𝚃𝚑𝚎𝚖𝚎𝚍 𝚐𝚛𝚘𝚞𝚙 𝚖𝚊𝚗𝚊𝚐𝚎𝚖𝚎𝚗𝚝 𝚋𝚘𝚝.
+𝙱𝚞𝚒𝚕𝚍 𝚊𝚗𝚍 𝚖𝚊𝚗𝚊𝚐𝚎𝚍 𝚋𝚢 𝙻𝚎𝚕𝚞𝚘𝚌𝚑 𝚏𝚘𝚛 𝚈𝚘𝚞𝚛 𝚃𝚎𝚕𝚎𝚐𝚛𝚊𝚖 𝙶𝚛𝚘𝚞𝚙 , 𝙸 𝚜𝚙𝚎𝚌𝚒𝚊𝚕𝚒𝚣𝚎 𝚒𝚗 𝚖𝚊𝚗𝚊𝚐𝚒𝚗𝚐 𝚊𝚗𝚒𝚖𝚎 𝚊𝚗𝚍 𝚜𝚒𝚖𝚒𝚕𝚊𝚛 𝚝𝚑𝚎𝚖𝚎𝚍 𝚐𝚛𝚘𝚞𝚙𝚜.
+𝚈𝚘𝚞 𝚌𝚊𝚗 𝚏𝚒𝚗𝚍 𝚖𝚢 𝚕𝚒𝚜𝚝 𝚘𝚏 𝚊𝚟𝚊𝚒𝚕𝚊𝚋𝚕𝚎 𝚌𝚘𝚖𝚖𝚊𝚗𝚍𝚜 𝚠𝚒𝚝𝚑! 𝙷𝚒𝚝` *🔐Commands*   
 """
 
 buttons = [
     [
         InlineKeyboardButton(
-            text="➕️ ADD Asuna TO YOUR GROUP ➕️",url="t.me/My_Asuna_Robot?startgroup=true"),
+            text="➕ ADD SHINOBU TO YOUR GROUP ➕",url="t.me/Shinobu_robot?startgroup=true"),
     ],
     [
-        InlineKeyboardButton(text="ℹ️ ABOUT", callback_data="asuna_"),
-        InlineKeyboardButton(text="📚 COMMANDS", callback_data="help_back"),
-     
-    ],
-    [     InlineKeyboardButton(
-            text="🤴 OWNER", url="https://telegram.dog/The_Ghost_Hunter"),
+        InlineKeyboardButton(
+              text="📚 Commands & Help", callback_data="help_back"),
     
     ],
     [
         InlineKeyboardButton(
-            text="📺 Star Wolrd Entertainment", url="https://telegram.dog/fire_world_entertainment"),
+            text="✨ Anime LoverZ ✨", url="https://t.me/Animeloverz1234"),
     ],
     [
-        InlineKeyboardButton(
-            text="📕 Logis", url="https://t.me/AsunaLogUpdate"),
-          
-
-
-InlineKeyboardButton(
-            text="👥 SUPPORT", url="https://telegram.dog/AsunaRobotSupport"
+         InlineKeyboardButton(
+            text="🔥 Support 🔥", url="https://t.me/shinobu_help_support",
         ),
-
     ],
     [
         InlineKeyboardButton(
-                    text="💟 Source Code", url="https://github.com/HuntingBots/AsunaRobot"
+            text="📑 Logs", url="https://t.me/shinoburobot1"),
+        InlineKeyboardButton(
+            text="Update Channel 📢", url="https://t.me/Shinobu_Update_Channel"
         ),
     ],
 ]
