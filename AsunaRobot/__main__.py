@@ -110,16 +110,14 @@ buttons = [
 
 
 HELP_STRINGS = """
-`Hi.. I'm` [Asuna 🛠️]("https://telegra.ph/file/8cab4bb122cf76702b06d.jpg") 
+`Hi.. I'm` *Shinobu*
 `Click on the buttons below to get documentation about specific modules..`"""
 
 
 ASUNA_IMG = "https://telegra.ph/file/7e61fe06a9c02747249c4.jpg"
 
-DONATE_STRING = """Heya, glad to hear you want to donate!
- You can support the project via [Paypal](#) or by contacting @a_viyu or @simpleboy786 \
- Supporting isnt always financial! \
- Those who cannot provide monetary support are welcome to help us develop the bot at ."""
+DONATE_STRING = """Heya, We are glad to hear you want to donate!
+ But We Don't Need Donation But You Can Help Us By Share The Bot To Your Friends."""
 
 IMPORTED = {}
 MIGRATEABLE = []
