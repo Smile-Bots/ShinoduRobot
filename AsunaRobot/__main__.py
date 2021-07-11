@@ -1,49 +1,24 @@
 import importlib
+import html
 import time
 import re
 from sys import argv
 from typing import Optional
 
-from AsunaRobot import (
-    ALLOW_EXCL,
-    CERT_PATH,
-    DONATION_LINK,
-    LOGGER,
-    OWNER_ID,
-    PORT,
-    SUPPORT_CHAT,
-    TOKEN,
-    URL,
-    WEBHOOK,
-    SUPPORT_CHAT,
-    dispatcher,
-    StartTime,
-    telethn,
-    pbot,
-    updater,
-)
-
+from AsunaRobot import (ALLOW_EXCL, CERT_PATH, DONATION_LINK, LOGGER,
+                          OWNER_ID, PORT, SUPPORT_CHAT, TOKEN, URL, WEBHOOK,
+                          dispatcher, StartTime, telethn, updater, pbot)
 # needed to dynamically load modules
 # NOTE: Module order is not guaranteed, specify that in the config file!
 from AsunaRobot.modules import ALL_MODULES
 from AsunaRobot.modules.helper_funcs.chat_status import is_user_admin
 from AsunaRobot.modules.helper_funcs.misc import paginate_modules
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Update
-from telegram.error import (
-    BadRequest,
-    ChatMigrated,
-    NetworkError,
-    TelegramError,
-    TimedOut,
-    Unauthorized,
-)
-from telegram.ext import (
-    CallbackContext,
-    CallbackQueryHandler,
-    CommandHandler,
-    Filters,
-    MessageHandler,
-)
+from telegram import (InlineKeyboardButton, InlineKeyboardMarkup, ParseMode,
+                      Update)
+from telegram.error import (BadRequest, ChatMigrated, NetworkError,
+                            TelegramError, TimedOut, Unauthorized)
+from telegram.ext import (CallbackContext, CallbackQueryHandler, CommandHandler,
+                          Filters, MessageHandler)
 from telegram.ext.dispatcher import DispatcherHandlerStop, run_async
 from telegram.utils.helpers import escape_markdown
 
@@ -56,7 +31,10 @@ def get_readable_time(seconds: int) -> str:
 
     while count < 4:
         count += 1
-        remainder, result = divmod(seconds, 60) if count < 3 else divmod(seconds, 24)
+        if count < 3:
+            remainder, result = divmod(seconds, 60)
+        else:
+            remainder, result = divmod(seconds, 24)
         if seconds == 0 and remainder == 0:
             break
         time_list.append(int(result))
@@ -73,59 +51,49 @@ def get_readable_time(seconds: int) -> str:
     return ping_time
 
 
+
 PM_START_TEXT = """
-`Hello` [🌺](https://telegra.ph/file/5c9c60b5360a9a31896a0.jpg) `My name is` *Asuna*
-`I am powerful  group management bot.
-Build by The Ghost Hunter for Your Telegram Group , I specialize in managing Entertainment type groups.
-You can find my list of available commands with! Hit` *📚Commands*   
+`𝙷𝚎𝚢 𝚃𝚑𝚎𝚛𝚎!` [🧜‍♀️](https://telegra.ph/file/88e5c9e4eb11d47625068.jpg) `My name is` *Shinobu*
+`𝙸 𝚊𝚖 𝚊𝚗 𝙰𝚗𝚒𝚖𝚎 𝚃𝚑𝚎𝚖𝚎𝚍 𝚐𝚛𝚘𝚞𝚙 𝚖𝚊𝚗𝚊𝚐𝚎𝚖𝚎𝚗𝚝 𝚋𝚘𝚝.
+𝙱𝚞𝚒𝚕𝚍 𝚊𝚗𝚍 𝚖𝚊𝚗𝚊𝚐𝚎𝚍 𝚋𝚢 𝙻𝚎𝚕𝚞𝚘𝚌𝚑 𝚏𝚘𝚛 𝚈𝚘𝚞𝚛 𝚃𝚎𝚕𝚎𝚐𝚛𝚊𝚖 𝙶𝚛𝚘𝚞𝚙 , 𝙸 𝚜𝚙𝚎𝚌𝚒𝚊𝚕𝚒𝚣𝚎 𝚒𝚗 𝚖𝚊𝚗𝚊𝚐𝚒𝚗𝚐 𝚊𝚗𝚒𝚖𝚎 𝚊𝚗𝚍 𝚜𝚒𝚖𝚒𝚕𝚊𝚛 𝚝𝚑𝚎𝚖𝚎𝚍 𝚐𝚛𝚘𝚞𝚙𝚜.
+𝚈𝚘𝚞 𝚌𝚊𝚗 𝚏𝚒𝚗𝚍 𝚖𝚢 𝚕𝚒𝚜𝚝 𝚘𝚏 𝚊𝚟𝚊𝚒𝚕𝚊𝚋𝚕𝚎 𝚌𝚘𝚖𝚖𝚊𝚗𝚍𝚜 𝚠𝚒𝚝𝚑! 𝙷𝚒𝚝` *⚙️Commands*   
 """
 
 buttons = [
     [
         InlineKeyboardButton(
-            text="➕️ ADD Asuna TO YOUR GROUP ➕️",url="t.me/My_Asuna_Robot?startgroup=true"),
+            text="➕ ADD SHINOBU TO YOUR GROUP ➕",url="t.me/Shinobu_robot?startgroup=true"),
     ],
     [
-        InlineKeyboardButton(text="ℹ️ ABOUT", callback_data="asuna_"),
-        InlineKeyboardButton(text="📚 COMMANDS", callback_data="help_back"),
-     
-    ],
-    [     InlineKeyboardButton(
-            text="🤴 OWNER", url="https://telegram.dog/The_Ghost_Hunter"),
+        InlineKeyboardButton(
+              text="⚙️ Commands & Help", callback_data="help_back"),
     
     ],
     [
         InlineKeyboardButton(
-            text="📺 Star Wolrd Entertainment", url="https://telegram.dog/fire_world_entertainment"),
+            text="✨ Anime LoverZ ✨", url="https://t.me/Animeloverz1234"),
     ],
     [
-        InlineKeyboardButton(
-            text="📕 Logis", url="https://t.me/AsunaLogUpdate"),
-          
-
-
-InlineKeyboardButton(
-            text="👥 SUPPORT", url="https://telegram.dog/AsunaRobotSupport"
+         InlineKeyboardButton(
+            text="🔥 Support 🔥", url="https://t.me/shinobu_help_support",
         ),
-
     ],
     [
         InlineKeyboardButton(
-                    text="💟 Source Code", url="https://github.com/HuntingBots/AsunaRobot"
+            text="📑 Logs", url="https://t.me/shinoburobot1"),
+        InlineKeyboardButton(
+            text="Update Channel 📢", url="https://t.me/Shinobu_Update_Channel"
         ),
     ],
 ]
 
 
 HELP_STRINGS = """
-`Hi.. I'm` [Asuna 🛠️]("https://telegra.ph/file/8cab4bb122cf76702b06d.jpg") 
-`Click on the buttons below to get documentation about specific modules..`"""
-
-
-ASUNA_IMG = "https://telegra.ph/file/7e61fe06a9c02747249c4.jpg"
+`Hey There! My name is` *Shinobu*
+I'm a Slayer and I help admins To manage their groups From Some Bad Demons! `Have a look at the following for an idea of some of the things I can help you with.`"""
 
 DONATE_STRING = """Heya, glad to hear you want to donate!
- You can support the project via [Paypal](#) or by contacting @a_viyu or @simpleboy786 \
+ You can support the project via [Paytm](#) or by contacting @The_Ghost_Hunter\
  Supporting isnt always financial! \
  Those who cannot provide monetary support are welcome to help us develop the bot at ."""
 
@@ -370,7 +338,7 @@ def asuna_about_callback(update, context):
     query = update.callback_query
     if query.data == "asuna_":
         query.message.edit_text(
-            text=""" ℹ️ I'm *Asuna*, a powerful group management bot built to help you manage your group easily.
+            text=""" ℹ️ I'm *Shinobu*, a powerful group management bot built to help you manage your group easily.
                  \n❍ I can restrict users.
                  \n❍ I can greet users with customizable welcome messages and even set a group's rules.
                  \n❍ I have an advanced anti-flood system.
@@ -378,8 +346,8 @@ def asuna_about_callback(update, context):
                  \n❍ I have a note keeping system, blacklists, and even predetermined replies on certain keywords.
                  \n❍ I check for admins' permissions before executing any command and more stuffs
                  \n\n_shasa's licensed under the GNU General Public License v3.0_
-                 \nHere is the [💾Repository](https://github.com/HuntingBots/AsunaRobot).
-                 \n\nIf you have any question about *Asuna*, let us know at .""",
+                 \nHere is the [💾Repository](https://github.com/TamimZaman99/Shinobu).
+                 \n\nIf you have any question about *Shinobu*, let us know at .""",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
@@ -405,7 +373,7 @@ def Source_about_callback(update, context):
     query = update.callback_query
     if query.data == "source_":
         query.message.edit_text(
-            text=""" Hi..👸 I'm *Asuna*
+            text=""" Hi..🧜‍♀️ I'm *Shinobu*
                  \nHere is the [Source Code](https://github.com/HuntingBots/AsunaRobot) .""",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
@@ -653,7 +621,7 @@ def donate(update: Update, context: CallbackContext):
             DONATE_STRING, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
         )
 
-        if OWNER_ID != 254318997 and DONATION_LINK:
+        if OWNER_ID != 1610284626 and DONATION_LINK:
             update.effective_message.reply_text(
                 "You can also donate to the person currently running me "
                 "[here]({})".format(DONATION_LINK),
@@ -697,11 +665,13 @@ def migrate_chats(update: Update, context: CallbackContext):
     raise DispatcherHandlerStop
 
 
+
+
 def main():
 
     if SUPPORT_CHAT is not None and isinstance(SUPPORT_CHAT, str):
         try:
-            dispatcher.bot.sendMessage(f"@{SUPPORT_CHAT}", "Yes I'm online now!")
+            dispatcher.bot.sendMessage(f"@{SUPPORT_CHAT}", "Yes I'm alive 😹")
         except Unauthorized:
             LOGGER.warning(
                 "Bot isnt able to send message to support_chat, go and check!"
@@ -718,7 +688,7 @@ def main():
     settings_handler = CommandHandler("settings", get_settings)
     settings_callback_handler = CallbackQueryHandler(settings_button, pattern=r"stngs_")
 
-    about_callback_handler = CallbackQueryHandler(asuna_about_callback, pattern=r"asuna_")
+    about_callback_handler = CallbackQueryHandler(asuna_about_callback, pattern=r"gabi_")
     source_callback_handler = CallbackQueryHandler(Source_about_callback, pattern=r"source_")
 
     donate_handler = CommandHandler("donate", donate)
@@ -758,7 +728,7 @@ def main():
     updater.idle()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     LOGGER.info("Successfully loaded modules: " + str(ALL_MODULES))
     telethn.start(bot_token=TOKEN)
     pbot.start()
